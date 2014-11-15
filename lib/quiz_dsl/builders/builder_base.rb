@@ -1,6 +1,7 @@
 module QuizDSL
   module Builders
     class BuilderBase
+      include ActiveModel::Validations
 
       def build
         raise NotImplementedError

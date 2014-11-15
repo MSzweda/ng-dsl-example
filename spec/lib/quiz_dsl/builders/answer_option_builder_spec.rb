@@ -25,4 +25,53 @@ describe QuizDSL::Builders::AnswerOptionBuilder do
     end
   end
 
+  describe '#valid?' do
+
+    context 'when all data is set' do
+      it 'returns true' do
+        expect(subject.valid?).to eq true
+      end
+    end
+
+    context 'when id is nil' do
+      let(:id) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz first question an answer option id variable missing"]
+      end
+    end
+
+    context 'when label is nil' do
+      let(:label) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz first question label variable missing"]
+      end
+    end
+
+    context 'when text is nil' do
+      let(:text) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz first question an answer option text variable missing"]
+      end
+    end
+
+  end
+
 end
