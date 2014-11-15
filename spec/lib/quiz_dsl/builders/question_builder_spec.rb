@@ -3,10 +3,11 @@ require 'rails_helper'
 describe QuizDSL::Builders::QuestionBuilder do
 
   subject do
-    described_class.new(label)
+    described_class.new(label, parent_labels)
   end
 
   let(:label) { :some_label }
+  let(:parent_labels) { [:quiz] }
 
   describe '#build' do
 
@@ -39,6 +40,12 @@ describe QuizDSL::Builders::QuestionBuilder do
       expect(subject.build.answer_options.size).to eq 2
     end
 
+  end
+
+  describe '#object_key' do
+    it 'returns object key built from labels' do
+      expect(subject.object_key).to eq 'quiz.some_label'
+    end
   end
 
 end

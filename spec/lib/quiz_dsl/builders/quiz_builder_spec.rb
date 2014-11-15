@@ -54,4 +54,10 @@ describe QuizDSL::Builders::QuizBuilder do
 
   end
 
+  describe '#object_key' do
+    it 'returns object key built from labels' do
+      expect(subject.object_key).to eq 'some_label'
+    end
+  end
+
 end

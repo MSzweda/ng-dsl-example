@@ -2,8 +2,9 @@ module QuizDSL
   module Builders
     class QuestionBuilder < BuilderBase
 
-      def initialize(label)
+      def initialize(label, parent_labels)
         @label = label
+        @parent_labels = parent_labels
         @answer_option_builders = []
       end
 
@@ -16,7 +17,7 @@ module QuizDSL
       end
 
       def answer_option(id, label, text)
-        builder = Builders::AnswerOptionBuilder.new(id, label, text)
+        builder = Builders::AnswerOptionBuilder.new(id, label, text, labels)
         @answer_option_builders << builder
       end
 
@@ -28,6 +29,10 @@ module QuizDSL
 
       def build_answer_options
         @answer_option_builders.map(&:build)
+      end
+
+      def labels
+        @parent_labels + [ @label ]
       end
 
     end
