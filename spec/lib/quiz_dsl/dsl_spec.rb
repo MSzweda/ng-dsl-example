@@ -68,5 +68,49 @@ describe QuizDSL::DSL do
 
     end
 
+    context 'when survey is invalid' do
+
+      context 'missing questions' do
+
+        let(:builder) do
+          subject.quiz(:quizzy) do
+            id 1
+            title "a quiz"
+          end
+        end
+
+        it "doesn't build the quiz" do
+          expect(builder.build).to be_nil
+        end
+
+        it "returns the first relevant validation error" do
+          builder.valid?
+          expect(builder.errors.full_messages).to eq ["Quizzy question builders variable missing"]
+        end
+      end
+
+      context 'missing questions answer option id' do
+        let(:builder) do
+          subject.quiz(:quizzy) do
+            id 1
+            title "a quiz"
+            question :a_nice_question do
+              text 'a nice question'
+              answer_option nil, :nice_answer, 'nice answer'
+            end
+          end
+        end
+
+        it "doesn't build the quiz" do
+          expect(builder.build).to be_nil
+        end
+
+        it "returns the first relevant validation error" do
+          builder.valid?
+          expect(builder.errors.full_messages).to eq ["Quizzy a nice question nice answer id variable missing"]
+        end
+      end
+    end
+
   end
 end
