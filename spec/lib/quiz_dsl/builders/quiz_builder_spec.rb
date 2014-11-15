@@ -63,7 +63,7 @@ describe QuizDSL::Builders::QuizBuilder do
   describe '#valid?' do
 
     let(:id) { 1 }
-    let(:title) { "I'm a question" }
+    let(:title) { "I'm a quiz" }
 
     before do
       subject.id id
