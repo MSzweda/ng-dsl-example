@@ -3,8 +3,10 @@ require 'rails_helper'
 describe QuizDSL::Builders::QuestionBuilder do
 
   subject do
-    described_class.new
+    described_class.new(label)
   end
+
+  let(:label) { :some_label }
 
   describe '#build' do
 
@@ -18,7 +20,6 @@ describe QuizDSL::Builders::QuestionBuilder do
     end
 
     it "returns question with label" do
-      subject.label :some_label
       expect(subject.build.label).to eq(:some_label)
     end
 

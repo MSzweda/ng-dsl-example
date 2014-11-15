@@ -2,16 +2,13 @@ module QuizDSL
   module Builders
     class QuestionBuilder < BuilderBase
 
-      def initialize
+      def initialize(label)
+        @label = label
         @answer_option_builders = []
       end
 
       def id(value)
         @id = value
-      end
-
-      def label(value)
-        @label = value
       end
 
       def text(value)

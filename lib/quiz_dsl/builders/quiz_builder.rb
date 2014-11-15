@@ -2,7 +2,8 @@ module QuizDSL
   module Builders
     class QuizBuilder < BuilderBase
 
-      def initialize
+      def initialize(label)
+        @label = label
         @question_builders = []
       end
 
@@ -10,18 +11,13 @@ module QuizDSL
         @id = value
       end
 
-      def label(value)
-        @label = value
-      end
-
       def title(value)
         @title = value
       end
 
       def question(label, &block)
-        builder = QuestionBuilder.new
+        builder = QuestionBuilder.new(label)
         builder.id(@question_builders.size + 1)
-        builder.label(label)
         builder.instance_eval(&block)
         @question_builders << builder
       end
