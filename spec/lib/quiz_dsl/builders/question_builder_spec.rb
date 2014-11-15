@@ -48,4 +48,61 @@ describe QuizDSL::Builders::QuestionBuilder do
     end
   end
 
+  describe '#valid?' do
+
+    let(:id) { 1 }
+    let(:text) { "I'm a question" }
+
+    before do
+      subject.id id
+      subject.text text
+    end
+
+    context 'when all data is set' do
+      it 'returns true' do
+        expect(subject.valid?).to eq true
+      end
+    end
+
+    context 'when id is nil' do
+      let(:id) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz some label id variable missing"]
+      end
+    end
+
+    context 'when label is nil' do
+      let(:label) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz label variable missing"]
+      end
+    end
+
+    context 'when text is nil' do
+      let(:text) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz some label text variable missing"]
+      end
+    end
+
+  end
+
 end
