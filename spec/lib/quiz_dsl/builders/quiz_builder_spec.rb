@@ -64,10 +64,17 @@ describe QuizDSL::Builders::QuizBuilder do
 
     let(:id) { 1 }
     let(:title) { "I'm a quiz" }
+    let(:question) do
+      subject.question :some_question do
+        text "I'm a question"
+        answer_option 1, :hello, "hello"
+      end
+    end
 
     before do
       subject.id id
       subject.title title
+      question
     end
 
     context 'when all data is set' do
@@ -112,6 +119,36 @@ describe QuizDSL::Builders::QuizBuilder do
       it 'sets errors' do
         subject.valid?
         expect(subject.errors.full_messages).to eq ["Some label title variable missing"]
+      end
+    end
+
+    context 'when no question is defined' do
+      let(:question) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Some label question builders variable missing"]
+      end
+    end
+
+    context 'when question is invalid' do
+      let(:question) do
+      subject.question :some_question do
+          answer_option 1, :hello, "hello"
+        end
+      end
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Some label some question text variable missing"]
       end
     end
 

@@ -1,7 +1,8 @@
 module QuizDSL
   module Builders
     class QuizBuilder < BuilderBase
-      validates_with QuizDSL::Validators::VariablePresenceValidator, attributes: [:id, :label, :title]
+      validates_with QuizDSL::Validators::VariablePresenceValidator, attributes: [:id, :label, :title, :question_builders]
+      validates_with QuizDSL::Validators::NestedObjectValidator, attributes: [:question_builders]
 
       def initialize(label)
         @label = label

@@ -52,10 +52,14 @@ describe QuizDSL::Builders::QuestionBuilder do
 
     let(:id) { 1 }
     let(:text) { "I'm a question" }
+    let(:answer_option) do
+      subject.answer_option 1, :answer_option, 'some option'
+    end
 
     before do
       subject.id id
       subject.text text
+      answer_option
     end
 
     context 'when all data is set' do
@@ -100,6 +104,34 @@ describe QuizDSL::Builders::QuestionBuilder do
       it 'sets errors' do
         subject.valid?
         expect(subject.errors.full_messages).to eq ["Quiz some label text variable missing"]
+      end
+    end
+
+    context 'when no answer options are given' do
+      let(:answer_option) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz some label answer option builders variable missing"]
+      end
+    end
+
+    context 'when an answer option is invalid' do
+      let(:answer_option) do
+        subject.answer_option 1, :answer_option, nil
+      end
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Quiz some label answer option text variable missing"]
       end
     end
 
