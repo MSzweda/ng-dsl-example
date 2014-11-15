@@ -60,4 +60,61 @@ describe QuizDSL::Builders::QuizBuilder do
     end
   end
 
+  describe '#valid?' do
+
+    let(:id) { 1 }
+    let(:title) { "I'm a question" }
+
+    before do
+      subject.id id
+      subject.title title
+    end
+
+    context 'when all data is set' do
+      it 'returns true' do
+        expect(subject.valid?).to eq true
+      end
+    end
+
+    context 'when id is nil' do
+      let(:id) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Some label id variable missing"]
+      end
+    end
+
+    context 'when label is nil' do
+      let(:label) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq [" label variable missing"]
+      end
+    end
+
+    context 'when title is nil' do
+      let(:title) { nil }
+
+      it 'returns false' do
+        expect(subject.valid?).to eq false
+      end
+
+      it 'sets errors' do
+        subject.valid?
+        expect(subject.errors.full_messages).to eq ["Some label title variable missing"]
+      end
+    end
+
+  end
+
 end
