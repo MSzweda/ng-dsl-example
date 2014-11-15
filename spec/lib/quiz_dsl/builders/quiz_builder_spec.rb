@@ -29,7 +29,6 @@ describe QuizDSL::Builders::QuizBuilder do
 
     it "returns quiz question" do
       subject.question :hi_there do
-        id 1
         text 'some text'
         answer_option 1, :some_label, 'some text again'
       end
@@ -42,6 +41,14 @@ describe QuizDSL::Builders::QuizBuilder do
       subject.question :b do
       end
       expect(subject.build.questions.size).to eq 2
+    end
+
+    it "sets consecutive ids on questions" do
+      subject.question :a do
+      end
+      subject.question :b do
+      end
+      expect(subject.build.questions.map(&:id)).to eq([1, 2])
     end
 
   end
