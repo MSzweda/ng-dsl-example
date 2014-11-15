@@ -25,6 +25,7 @@ module QuizDSL
       end
 
       def build
+        return unless valid?
         ::Quiz.new(@id, @label, @title, build_questions)
       end
 

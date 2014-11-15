@@ -8,14 +8,35 @@ describe QuizDSL::Builders::QuizBuilder do
 
   let(:label) { :some_label }
 
+  let(:id) { 1 }
+  let(:title) { "I'm a quiz" }
+  let(:question1) do
+    subject.question :some_question do
+      text "I'm a question"
+      answer_option 1, :hello, "hello"
+    end
+  end
+  let(:question2) do
+    subject.question :bye_there do
+      text 'some text'
+      answer_option 1, :some_other_label, 'some text again and again'
+    end
+  end
+
   describe '#build' do
+
+    before do
+      subject.id id
+      subject.title title
+      question1
+      question2
+    end
 
     it 'returns quiz' do
       expect(subject.build).to be_instance_of(Quiz)
     end
 
     it "returns quiz with id" do
-      subject.id 1
       expect(subject.build.id).to eq(1)
     end
 
@@ -24,31 +45,18 @@ describe QuizDSL::Builders::QuizBuilder do
     end
 
     it "returns quiz with title" do
-      subject.title "a quiz"
-      expect(subject.build.title).to eq("a quiz")
+      expect(subject.build.title).to eq("I'm a quiz")
     end
 
     it "returns quiz question" do
-      subject.question :hi_there do
-        text 'some text'
-        answer_option 1, :some_label, 'some text again'
-      end
       expect(subject.build.questions.first).to be_instance_of(Question)
     end
 
     it "builds question collection" do
-      subject.question :a do
-      end
-      subject.question :b do
-      end
       expect(subject.build.questions.size).to eq 2
     end
 
     it "sets consecutive ids on questions" do
-      subject.question :a do
-      end
-      subject.question :b do
-      end
       expect(subject.build.questions.map(&:id)).to eq([1, 2])
     end
 
@@ -62,19 +70,10 @@ describe QuizDSL::Builders::QuizBuilder do
 
   describe '#valid?' do
 
-    let(:id) { 1 }
-    let(:title) { "I'm a quiz" }
-    let(:question) do
-      subject.question :some_question do
-        text "I'm a question"
-        answer_option 1, :hello, "hello"
-      end
-    end
-
     before do
       subject.id id
       subject.title title
-      question
+      question1
     end
 
     context 'when all data is set' do
@@ -123,7 +122,7 @@ describe QuizDSL::Builders::QuizBuilder do
     end
 
     context 'when no question is defined' do
-      let(:question) { nil }
+      let(:question1) { nil }
 
       it 'returns false' do
         expect(subject.valid?).to eq false
@@ -136,7 +135,7 @@ describe QuizDSL::Builders::QuizBuilder do
     end
 
     context 'when question is invalid' do
-      let(:question) do
+      let(:question1) do
       subject.question :some_question do
           answer_option 1, :hello, "hello"
         end
